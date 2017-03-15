@@ -4210,6 +4210,12 @@ public final class Settings {
         };
 
         /**
+         * Whether to display roaming indicator for roaming signal connection
+         * @hide
+         */
+        public static final String ROAMING_INDICATOR_ICON = "roaming_indicator_icon";
+
+        /**
          * These are all public system settings
          *
          * @hide
