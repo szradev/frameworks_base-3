@@ -21,7 +21,7 @@
 
     <!-- Enable face auth only when swiping security view -->
     <java-symbol type="bool" name="config_faceAuthOnlyOnSecurityView" />
-    
+
     <!-- FOD icon dimming -->
     <java-symbol type="bool" name="config_targetUsesInKernelDimming" />
 
@@ -37,4 +37,8 @@
 
     <!-- Cycle through ringer modes -->
     <java-symbol type="string" name="volume_dialog_ringer_guidance_normal" />
+
+    <!-- Sensors block per app -->
+    <java-symbol type="array" name="config_blockPackagesSensorDrain" />
+
 </resources>
