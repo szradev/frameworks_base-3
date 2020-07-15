@@ -13,4 +13,7 @@
 
     <!-- Binary clock -->
     <string name="clock_title_binary" translatable="false">Binary</string>
+
+    <!-- Tux clock -->
+    <string name="clock_title_tux" translatable="false">Tux</string>
 </resources>
