@@ -399,7 +399,38 @@ public final class SystemServer {
     /**
      * Spawn a thread that monitors for fd leaks.
      */
-    private static native void spawnFdLeakCheckThread();
+    private static void spawnFdLeakCheckThread() {
+        final int enableThreshold = SystemProperties.getInt(SYSPROP_FDTRACK_ENABLE_THRESHOLD, 1024);
+        final int abortThreshold = SystemProperties.getInt(SYSPROP_FDTRACK_ABORT_THRESHOLD, 2048);
+        final int checkInterval = SystemProperties.getInt(SYSPROP_FDTRACK_INTERVAL, 120);
+
+        new Thread(() -> {
+            boolean enabled = false;
+            while (true) {
+                int maxFd = getMaxFd();
+                if (maxFd > enableThreshold) {
+                    // Do a manual GC to clean up fds that are hanging around as garbage.
+                    System.gc();
+                    maxFd = getMaxFd();
+                }
+
+                if (maxFd > enableThreshold && !enabled) {
+                    Slog.i("System", "fdtrack enable threshold reached, enabling");
+                    System.loadLibrary("fdtrack");
+                    enabled = true;
+                } else if (maxFd > abortThreshold) {
+                    Slog.i("System", "fdtrack abort threshold reached, dumping and aborting");
+                    fdtrackAbort();
+                }
+
+                try {
+                    Thread.sleep(checkInterval * 1000);
+                } catch (InterruptedException ex) {
+                    continue;
+                }
+            }
+        }).start();
+    }
 
     /**
      * Start native Incremental Service and get its handle.
