@@ -622,7 +622,7 @@ public abstract class AuthBiometricView extends LinearLayout {
         mNegativeButton = mInjector.getNegativeButton();
         mPositiveButton = mInjector.getPositiveButton();
         mTryAgainButton = mInjector.getTryAgainButton();
-        mUseFaceButton = mInjector.getUseFaceButton();
+        //mUseFaceButton = mInjector.getUseFaceButton();
 
         mAppIcon = new ImageView(mContext);
         final int iconDim = getResources().getDimensionPixelSize(
@@ -657,13 +657,13 @@ public abstract class AuthBiometricView extends LinearLayout {
             Utils.notifyAccessibilityContentChanged(mAccessibilityManager, this);
         });
 
-        mUseFaceButton.setOnClickListener((view) -> {
-            mCallback.onAction(Callback.ACTION_USE_FACE);
-        });
+        //mUseFaceButton.setOnClickListener((view) -> {
+          //  mCallback.onAction(Callback.ACTION_USE_FACE);
+       // });
 
         if (this instanceof AuthBiometricFingerprintView) {
             if (!Utils.canAuthenticateWithFace(mContext, mUserId)){
-                mUseFaceButton.setVisibility(View.GONE);
+               // mUseFaceButton.setVisibility(View.GONE);
             }
             if (mHasFod) {
                 final int navbarHeight = getResources().getDimensionPixelSize(
@@ -684,7 +684,7 @@ public abstract class AuthBiometricView extends LinearLayout {
             }
         } else if (this instanceof AuthBiometricFaceView) {
             mIconView.setVisibility(View.VISIBLE);
-            mUseFaceButton.setVisibility(View.GONE);
+            //mUseFaceButton.setVisibility(View.GONE);
         }
     }
 
