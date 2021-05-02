@@ -114,6 +114,7 @@ public class FODCircleView extends ImageView implements ConfigurationListener {
     private boolean mIsKeyguard;
     private boolean mTouchedOutside;
     private boolean mIsAnimating = false;
+    private int mMinBottomMargin;
 
     private Handler mHandler;
 
@@ -191,12 +192,20 @@ public class FODCircleView extends ImageView implements ConfigurationListener {
 
         @Override
         public void onKeyguardBouncerChanged(boolean isBouncer) {
-            mIsBouncer = isBouncer;
+	    mIsBouncer = isBouncer;
             if (mUpdateMonitor.isFingerprintDetectionRunning()) {
-                if (isPinOrPattern(mUpdateMonitor.getCurrentUser()) || !isBouncer) {
-                    show();
+                if (mMinBottomMargin != 0) {
+                    if (isPinOrPattern(mUpdateMonitor.getCurrentUser()) || !isBouncer) {
+                        show();
+                    } else {
+                        hide();
+                    }
                 } else {
-                    hide();
+                    if (isBouncer) {
+                        hide();
+                    } else {
+                        show();
+                    }
                 }
             } else {
                 hide();
@@ -304,6 +313,9 @@ public class FODCircleView extends ImageView implements ConfigurationListener {
         mNavigationBarSize = res.getDimensionPixelSize(R.dimen.navigation_bar_size);
 
         mDreamingMaxOffset = (int) (mSize * 0.1f);
+
+	mMinBottomMargin = res.getDimensionPixelSize(
+				                R.dimen.kg_security_container_min_bottom_margin);
 
         mHandler = new Handler(Looper.getMainLooper());
 
